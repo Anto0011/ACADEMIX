@@ -1,0 +1,11 @@
+To replicate the virtual environment open the terminal and paste the following code:
+
+pip install -r requirements.txt
+
+OR
+
+pip3 install -r requirements.txt
+
+You should of course change your directory in terminal to your project folder like this:
+
+cd (Your project folder path here)
