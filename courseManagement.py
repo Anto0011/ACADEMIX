@@ -24,10 +24,7 @@ def keys(course_name):
     else:
         id = result[0][0]
         return id
-    
-#Get student id
-def student_id(email):
-    
+
 
 #Add a new subject
 def add_course(name, student_id):
@@ -41,13 +38,13 @@ def add_course(name, student_id):
 
 
 #Add a new topic under a subject
-def add_topic(course_name, topic_name):
+def add_topic(course_name, topic_name, student_id):
     #Get the primary key of the course
     id = keys(course_name)
 
     #Check if the topic already exists
-    sql = "SELECT topic_name FROM Topics WHERE course_id = (%s) AND topic_name = (%s)"
-    mycursor.execute(sql, (id, topic_name))#type: ignore
+    sql = "SELECT topic_name FROM Topics WHERE course_id = (%s) AND topic_name = (%s) AND Students_student_id = (%s)"
+    mycursor.execute(sql, (id, topic_name, student_id))#type: ignore
     result = mycursor.fetchall()
 
     #Add the topic if it doesn't exist

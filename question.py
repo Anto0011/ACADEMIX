@@ -19,15 +19,14 @@ mycursor = mydb.cursor()
 
 #Openai api key
 openai.api_key = settings.OPENAI_API_KEY
-print(openai.api_key)
 
 #Define propmpt and question functions
-def prompt(Prompt, num):
+def prompt(Prompt, num, temp):
     response = openai.Completion.create(
     model="text-davinci-003",
     prompt= Prompt,
     max_tokens= int(num) * 50,
-    temperature=0.25)
+    temperature= temp)
     return response
 
 def generate_questions(course_id, topic_id, num_questions, difficulty_level):
@@ -37,7 +36,7 @@ def generate_questions(course_id, topic_id, num_questions, difficulty_level):
     Q:
     A: """
 
-    response = prompt(Prompt, num_questions)
+    response = prompt(Prompt, num_questions, 0.25)
     result = response["choices"][0]["text"] #type: ignore
     return result
 
@@ -52,9 +51,13 @@ def add_question(question, topic_name, level, student_id):
     result = mycursor.fetchall()
 
     sql = "INSERT INTO group1.Questions (question_context, course_id, question_level) VALUES (%s, %s, %s);"
-    mycursor.execute(sql, (question, id, level))
+    mycursor.execute(sql, (question, student_id, level))
     
+def ask_gpt(msg):
+    response = prompt(msg, 1, 0.35)
+    result = response["choices"][0]["text"] #type: ignore
+    return result
 
 
 def add_answer(answer, subject_name, topic_content):
-    
+    pass

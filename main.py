@@ -1,27 +1,20 @@
-from inspect import indentsize
 import discord
-import config
 from discord.ext import commands
-import login_register
+import question
+import settings
+from cogs.greetings import Greetings
 
+logger = settings.logging.getLogger("bot")
 
+class NotOwner(commands.CheckFailure):
+    ...
 
-
-
-# Initialize bot
-bot = commands.Bot(command_prefix=config.PREFIX, intents=discord.Intents.all())
-
-# Setup
-@bot.event
-async def on_ready():
-    await bot.change_presence(activity=discord.Game(f"{config.PREFIX}help"))
-    print("-------")
-    print("Bot is online ✅")
-    print("-------")
-
-# Run the bot
-on_ready()
-
+def is_owner():
+    async def predicate(ctx):
+        if ctx.author.id != ctx.guild.owner_id:
+            raise NotOwner("Hey, you are not the owner")
+        return True
+    return commands.check(predicate)
 
 def run():
     Intents = discord.Intents.default()
@@ -29,46 +22,61 @@ def run():
 
     bot = commands.Bot(command_prefix="!", intents=Intents)
 
-    #Register command
+    #Create on_ready event to set up extensions and logger
+    @bot.event
+    async def on_ready():
+        logger.info(f"User: {bot.user} (ID: {bot.user.id})")#type: ignore
+
+        for cog_file in settings.COGS_DIR.glob("*.py"):
+            if cog_file != "__init__.py":
+                await bot.load_extension(f"cogs.{cog_file.name[:-3]}")
+
+        for cmd_file in settings.CMDS_DIR.glob("*.py"):
+            if cmd_file.name != "__init__.py":
+                await bot.load_extension(f"cmds.{cmd_file.name[:-3]}")
 
 
-    #Login command
+    #Load, Unload, and Reload extensions
     @bot.command()
-    async def login(message):
+    #@is_owner()
+    async def load(ctx, cog: str):
+        await bot.load_extension(f"cogs.{cog.lower()}")
 
-
-    # select course command
     @bot.command()
-    async def select_course(ctx):
-       await ctx.send(f"session_id")
+    #@is_owner()
+    async def unload(ctx, cog: str):
+        await bot.unload_extension(f"cogs.{cog.lower()}")
 
-    # add course command
     @bot.command()
-    async def add_course(course_name):
-        pass
+    #@is_owner()
+    async def reload(ctx, cog: str):
+        await bot.reload_extension(f"cogs.{cog.lower()}")
 
-    # #Add a new topic under a course command
-    @bot.command()
-    async def add_topic(course_name, topic_content):
-        pass
-
-    #Remove a course and related topics
-    @bot.command()
-    async def remove_course(course_name, topic_content):
-
-        pass
-
-    # Remove a topic under a course
-    @bot.command()
-    async def remove_topic(course_name, topic_content):
-        pass
-
-    # Remove all topics under a course
-    @bot.command()
-    async def remove_all_topics(course_name, topic_content):
-        pass
+    #Error handling for load unload and reload
+    @load.error
+    async def load_error(ctx, error):
+        if isinstance(error, NotOwner):
+            await ctx.send("Permission denied")
     
-    bot.run(config.TOKEN)
+    @unload.error
+    async def unload_error(ctx, error):
+        if isinstance(error, NotOwner):
+            await ctx.send("Permission denied")
+    
+    @reload.error
+    async def reload_error(ctx, error):
+        if isinstance(error, NotOwner):
+            await ctx.send("Permission denied")
 
-run()
+
+    #Global error handling for 
+    @bot.event
+    async def on_command_error(ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+           await ctx.send("handled error globally")
+    
+    bot.run(settings.DISCORD_API_KEY, root_logger=True)
+
+if __name__ == "__main__":
+    run()
 
