@@ -1,11 +1,13 @@
-To replicate the virtual environment open the terminal and paste the following code:
+To replicate the virtual environment follow these steps:
 
-pip install -r requirements.txt
+open the command line (cmd)
+change directory to your project folder (cd [your project folder path])
+install virtual environment library if not installed (pip install virtualenv OR pip3 install virtualenv)
+inside the project folder create a virtual environment (python -m venv env)
+activate the virtual environment (env/Scripts/activate.bat)
+install the required libraries for the project (pip install -r requirements.txt OR pip3 install -r requirements.txt)
+make sure to restart visual studio code for the changes to take effect
+open project folder in visual studio code
 
-OR
-
-pip3 install -r requirements.txt
-
-You should of course change your directory in terminal to your project folder like this:
-
-cd (Your project folder path here)
+and that's it,
+have fun coding!
