@@ -3,17 +3,22 @@ import os
 import logging
 from logging.config import dictConfig
 from dotenv import load_dotenv
+import discord
 
 load_dotenv()
 
 DISCORD_API_KEY = str(os.getenv("DISCORD_API_KEY"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))#type: ignore
+
 
 BASE_DIR = pathlib.Path(__file__).parent
 
 CMDS_DIR = BASE_DIR / "cmds"
 COGS_DIR = BASE_DIR / "cogs"
 
+#Import slash commands path
+SLASHCMDS_DIR = BASE_DIR / "slashcmds"
 
 LOGGING_CONFIG = {
     "version": 1,

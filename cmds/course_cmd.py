@@ -8,9 +8,9 @@ async def course(ctx):
          await ctx.send(f"No, {ctx.subcommand_passed} does not exist")
 
 # add course command
-@course.command()
-async def add_course(course_name):
-    pass
+@course.command(name = "add_course")
+async def add_course(ctx):
+    await ctx.send("add_course command")
 
 #Remove a course and related topics
 @course.command()
