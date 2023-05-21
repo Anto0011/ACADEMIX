@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import question
 import settings
 from discord import app_commands
 
@@ -21,11 +20,13 @@ def run():
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")#type: ignore
 
-        await bot.load_extension("slashcmds.welcome")
+        #Load the required discord commands
+        await bot.load_extension("slashcmds.course")
+        await bot.load_extension("slashcmds.LogReg")
 
+        #Sync the commands with discord server
         bot.tree.copy_global_to(guild=settings.GUILDS_ID)
         await bot.tree.sync(guild=settings.GUILDS_ID)
-
 
 
     #Global error handling for 
@@ -36,6 +37,7 @@ def run():
     
     bot.run(settings.DISCORD_API_KEY, root_logger=True)
 
+#Run the bot
 if __name__ == "__main__":
     run()
 

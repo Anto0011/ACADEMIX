@@ -29,8 +29,14 @@ def prompt(Prompt, num, temp):
     temperature= temp)
     return response
 
+
+def ask_gpt(msg):
+    response = prompt(msg, 1, 0.35)
+    print(response)
+
+
 def generate_questions(course_id, topic_id, num_questions, difficulty_level):
-    Prompt = f"""Generate {num_questions} questions and answers for {course_id} on {topic_id} for students preparing for exams and tests. 
+    Prompt = f"""Generate {num_questions} question(s) and answers for {course_id} on {topic_id} for students preparing for exams and tests. 
     Ensure that your questions and answers cover key concepts and information, and are accurate and factually correct. Difficulty level: {difficulty_level}.
     Desired Format: 
     Q:
@@ -42,21 +48,8 @@ def generate_questions(course_id, topic_id, num_questions, difficulty_level):
 
 #Question and answer database management
 def add_question(question, topic_name, level, student_id):
-    #Get the primary key of the course
-    id = courseManagement.keys(topic_name)
-
-    #Check if the question already exists
-    sql = "SELECT question_content FROM Questions WHERE question_content REGEXP(%s)"
-    mycursor.execute(sql, (question))#type: ignore
-    result = mycursor.fetchall()
-
-    sql = "INSERT INTO group1.Questions (question_context, course_id, question_level) VALUES (%s, %s, %s);"
-    mycursor.execute(sql, (question, student_id, level))
+    ...
     
-def ask_gpt(msg):
-    response = prompt(msg, 1, 0.35)
-    result = response["choices"][0]["text"] #type: ignore
-    return result
 
 
 def add_answer(answer, subject_name, topic_content):
