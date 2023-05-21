@@ -15,7 +15,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 # Get the primary key of the course
-def course_key(course_name):
+def guide_key(course_name):
     # Create a cursor
     mycursor = mydb.cursor()
 
@@ -66,7 +66,7 @@ def add_course(course_name, student_name):
     student_id = get_student_id(student_name)
 
     # Check if the same course has already been added by the user
-    sql = "SELECT COUNT(*) FROM group1.Study_guide WHERE course_name = %s AND student_id = %s"
+    sql = "SELECT COUNT(*) FROM group1.Study_guide WHERE course_name = (%s) AND student_id = (%s)"
     mycursor.execute(sql, (course_name, student_id))
     result = mycursor.fetchone()
 
@@ -83,21 +83,21 @@ def add_course(course_name, student_name):
 # Add a new topic under a course
 def add_topic(course_name, topic_name):
     # Get the primary key of the course
-    course_id = course_key(course_name)
+    guide_id = guide_key(course_name)
 
     mycursor = mydb.cursor()
 
     try:
         # Check if the topic already exists
         sql = "SELECT topic_name FROM Topics WHERE guide_id = (%s) AND topic_name = (%s)"
-        mycursor.execute(sql, (course_id, topic_name,))
+        mycursor.execute(sql, (guide_id, topic_name,))
         result = mycursor.fetchall()
 
         # Add the topic if it doesn't exist
         if result == []:
             # INSERT the topic into the database with corresponding course foreign key
             sql = "INSERT INTO group1.Topics (guide_id, topic_name) VALUES (%s, %s)"
-            mycursor.execute(sql, (course_id, topic_name))
+            mycursor.execute(sql, (guide_id, topic_name))
             mydb.commit()
 
             # Check if the topic is added successfully
@@ -121,7 +121,9 @@ def remove_course(course_name, name):
     # Get the primary key of the course
     student_id = get_student_id(name)
 
-    if student_id is False:
+    # Check if the course exists
+    existing_courses = get_existing_courses(name)
+    if course_name not in existing_courses:
         return f"Course {course_name} doesn't exist"
 
     try:
@@ -138,73 +140,44 @@ def remove_course(course_name, name):
         mycursor.execute(sql, (course_name,))
         mydb.commit()
 
-        return f"Course {course_name} and related topics have been removed from study guide"
+        return f"Course {course_name} and related topics have been removed from the study guide"
 
     except Exception as e:
         return "An error occurred: " + str(e)
 
     finally:
         # Close the cursor
-        mycursor.close()
-
-
+        mycursor.close() #type: ignore
 
 
 # Remove a topic under a course
-def remove_topic(course_name, topic_name):
+def remove_topic(topic_name, username):
     # Get the primary key of the course
-    guide_id = course_key(course_name)
+    student_id = get_student_id(username)
+    guide_id = guide_key(student_id)
 
     # Create a cursor
-    mycursor = mydb.cursor()
+    mycursor = mydb.cursor(username)
 
     try:
-        # Check if the topic already exists
-        sql = "SELECT topic_name FROM Topics WHERE guide_id = (%s) AND topic_name = (%s)"
-        mycursor.execute(sql, (guide_id, topic_name,))
-        result = mycursor.fetchall()
-
-        # Remove the topic if it exists
-        if result == []:
-            print("This topic doesn't exist")
+        # Check if the topic exists
+        existing_topics = get_existing_topics(username)
+        
+        if topic_name not in existing_topics:
+            return f"Topic {topic_name} doesn't exist"
         else:
-            # DELETE the topic from the database with corresponding course primary key
-            sql = "DELETE FROM Topics WHERE topic_name = (%s) AND guide_id = (%s)"
-            mycursor.execute(sql, (topic_name, guide_id))
+            # DELETE the topic from the database with the corresponding course primary key
+            sql = "DELETE FROM Topics WHERE guide_id = (%s)"
+            mycursor.execute(sql, (guide_id,))
             mydb.commit()
 
-            # Check if the topic is removed successfully
-            sql = "SELECT topic_name FROM Topics WHERE topic_name = (%s) AND guide_id = (%s)"
-            mycursor.execute(sql, (topic_name, guide_id))
-            result = mycursor.fetchall()
+            return f"Topic {topic_name} has been removed from study guide"
 
-            # If the topic doesn't exist, the operation is successful
-            if result == []:
-                print(topic_name, "has been successfully removed from Topics")
-            else:
-                pass
     except Exception as e:
-        print("An error occurred:", str(e))
+        return "An error occurred:", str(e)
     finally:
         # Close the cursor
         mycursor.close()
-
-
-#Remove all topics under a course
-def remove_all_topics(course_name):
-    
-    #Get the primary key of the course
-    if course_key(course_name) != False:
-        id = course_key(course_name)
-        #Remove all topics from a course
-        sql = "DELETE FROM Topics WHERE course_id = (%s);"
-        mycursor.execute(sql, (id,))#type: ignore
-        mydb.commit()
-        print(f"All topics have been removed from {course_name}")
-    else:
-        print(f"The course {course_name} doesn't exist")
-
-
 
 #Get existing courses
 def get_existing_courses(username):
@@ -226,7 +199,7 @@ def get_existing_courses(username):
         else:
             return ("There is no course added yet")
     except Exception as e:
-        print("An error occurred:", str(e))
+        return ("An error occurred:", str(e))
     finally:
         # Close the cursor
         mycursor.close()
@@ -237,20 +210,20 @@ def get_existing_topics(username):
     # Create a cursor object
     mycursor = mydb.cursor()
     try:
-        #Fetch existing courses
-        sql = "SELECT topic_name FROM Topics WHERE guide_id IN (SELECT guide_id FROM Study_guide WHERE student_name = (%s))"
+        #Fetch existing topics
+        sql = "SELECT topic_name FROM Topics WHERE guide_id IN (SELECT guide_id FROM Study_guide WHERE student_id = (%s))"
         mycursor.execute(sql, (student_id,))
         result = mycursor.fetchall()
 
         #Return the topics if there is any
         if result != []:
-            #Extract names from the results
+            #Extract topics from the results
             topic_names = [topic[0] for topic in result] #type: ignore
             return topic_names
         else:
-            print("There is no course added yet")
+            return []
     except Exception as e:
-        print("An error occurred:", str(e))
+        return ("An error occurred:", str(e))
     finally:
         # Close the cursor
         mycursor.close()

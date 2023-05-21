@@ -6,23 +6,31 @@ from discord import app_commands
 
 logger = settings.logging.getLogger("bot")
 
+
+
 def run():
     #Define intents
     Intents = discord.Intents.default()
     Intents.message_content = True
+    Intents.guilds = True
     Intents.members = True
+    Intents.dm_messages = True
 
     #initialize bot instance
     bot = commands.Bot(command_prefix="/", intents=Intents)
+
 
     #Create on_ready event to set up extensions and logger
     @bot.event
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")#type: ignore
+        
 
         #Load the required discord commands
         await bot.load_extension("slashcmds.course")
         await bot.load_extension("slashcmds.LogReg")
+        await bot.load_extension("slashcmds.GPT")
+
 
         #Sync the commands with discord server
         bot.tree.copy_global_to(guild=settings.GUILDS_ID)

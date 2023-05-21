@@ -14,7 +14,7 @@ class access(app_commands.Group):
         studentName = interaction.user.name
         print(studentName)
         result = login_register.register_user(studentName, Email, Password)
-        await interaction.response.send_message(result)
+        await interaction.response.send_message(f"{result} {interaction.user.mention}")
 
 
     #Login command

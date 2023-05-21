@@ -1,6 +1,5 @@
 import mysql.connector
 import hashlib
-import threading
 
 class LoginManager:
     def __init__(self):
@@ -18,8 +17,6 @@ class LoginManager:
 
 # Create an instance of LoginManager
 login_manager = LoginManager()
-
-
 
 
 
