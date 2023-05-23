@@ -29,41 +29,43 @@ git clone [https://github.com/berkeokur/Academix]
 **Step 2: Set Up the Environment**
 1.	Install virtualenv package using pip:
 
-pip install virtualenv
+_pip install virtualenv_
 
 OR
 
-pip3 install virtualenv
+_pip3 install virtualenv_
 
 2.	Create a virtual environment for Academix by running the following command in the project's root directory:
 
 **•	Windows:**
 
-Python3 -m venv env
+_Python3 -m venv env_
 	
 **•	Mac/Linux:**
 
-venv env
+_venv env_
 
 
 **3.	Activate the virtual environment:**
 
 **•	Windows:**
 
-env\Scripts\activate
+_env\Scripts\activate_
 
 **• macOS/Linux:**
 
-source env/bin/activate
+_source env/bin/activate_
 
 
 
 **Step 3: Install Dependencies**
 1.	Install the required Python packages by running the following command:
 
-pip install -r requirements.txt 
-OR 
-pip3 install -r requirements.txt
+_pip install -r requirements.txt_
+
+OR
+
+_pip3 install -r requirements.txt_
 
 
 
@@ -74,12 +76,21 @@ pip3 install -r requirements.txt
 3.	Add the following lines to the file:
 
 DISCORD_API_KEY= <your_api_key>
+
 OPENAI_API_KEY= <your_api_key>
+
 GUILD= <your_guild_id>
+
 ht= <your_hostname>
+
 user= <your_username>
+
 pwd= <your_password>
+
 db= <default_schema>
+
+pwd= <your_password>
+
 
 **Step 5: Start Academix**
 1.	In the terminal or command prompt, ensure that you are still in the project's root directory and the virtual environment is active.
