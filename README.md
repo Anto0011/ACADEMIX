@@ -28,9 +28,13 @@ git clone [https://github.com/berkeokur/Academix]
 
 **Step 2: Set Up the Environment**
 1.	Install virtualenv package using pip:
+
 pip install virtualenv
+
 OR
+
 pip3 install virtualenv
+
 2.	Create a virtual environment for Academix by running the following command in the project's root directory:
 
 **•	Windows:**
