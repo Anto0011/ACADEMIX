@@ -42,52 +42,69 @@ class courses(app_commands.Group):
         else:
             return data
     
-
-    # Add course command
     @app_commands.command()
     async def add_course(self, interaction: discord.Interaction, coursename: str):
+        # Check if the user is logged in
         if login_manager.is_logged_in(interaction.user.name):
+            # Add the course
             result = add_course(coursename, interaction.user.name)
+
+            # Send a response message
             await interaction.response.send_message(f"{result}", ephemeral=True)
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
 
-    #Add topics command
+
+    # Add topics command
     @app_commands.command()
     @app_commands.autocomplete(course_name=course_autocompletion)
     async def add_topic(self, interaction: discord.Interaction, course_name: str, topic_name: str):
-        #Check if the user is logged in
+        # Check if the user is logged in
         if login_manager.is_logged_in(interaction.user.name):
+            # Add the topic
             result = add_topic(course_name, topic_name)
+
+            # Send a response message
             await interaction.response.send_message(f"{result}", ephemeral=True)
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
 
 
-    #Remove course command
+    # Remove course command
     @app_commands.command()
     @app_commands.autocomplete(course_name=course_autocompletion)
     async def remove_course(self, interaction: discord.Interaction, course_name: str):
-        #Check if the user is logged in
+        # Check if the user is logged in
         if login_manager.is_logged_in(interaction.user.name):
+            # Remove the course
             result = remove_course(course_name, interaction.user.name)
+
+            # Send a response message
             await interaction.response.send_message(f"{result}", ephemeral=True)
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
 
-    #Remove topic command
+
+    # Remove topic command
     @app_commands.command()
     @app_commands.autocomplete(course_name=course_autocompletion, topic_name=topic_autocompletion)
     async def remove_topic(self, interaction: discord.Interaction, course_name: str, topic_name: str):
-        #Check if the user is logged in
+        # Check if the user is logged in
         if login_manager.is_logged_in(interaction.user.name):
+            # Remove the topic
             result = remove_topic(topic_name, interaction.user.name)
+
+            # Send a response message
             await interaction.response.send_message(f"{result}", ephemeral=True)
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
 
 
 
-
+#Setup
 async def setup(bot):
     bot.tree.add_command(courses(name="study_guide", description="Course management commands"))

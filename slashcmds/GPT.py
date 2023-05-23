@@ -57,12 +57,14 @@ class GPT(app_commands.Group):
     @app_commands.command()
     @app_commands.autocomplete(course=course_autocompletion, topic=topic_autocompletion, difficulty=difficulty_autocompletion)
     async def generate_question(self, interaction: discord.Interaction, course: str, topic: str, difficulty: str):
+        # Check if the user is logged in
         if login_manager.is_logged_in(interaction.user.name):
+        
             # Defer the initial response
             await interaction.response.defer()
 
-            #Generate the question/answer
-            Question,Answer = generate_question(course, topic, difficulty)
+            # Generate the question/answer
+            Question, Answer = generate_question(course, topic, difficulty)
 
             # Wait for a specific duration (if necessary)
             await asyncio.sleep(3)
@@ -71,23 +73,38 @@ class GPT(app_commands.Group):
             dm_channel = await user.create_dm()
             await dm_channel.send(content=f"Question: {Question}\n\n Answer: ||{Answer}||")
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
+
 
     @app_commands.command()
     async def ask_gpt(self, interaction: discord.Interaction, question: str, temp: float):
-        if login_manager.is_logged_in:
+        # Check if the user is logged in
+        if login_manager.is_logged_in(interaction.user.name):
+            
             # Defer the initial response
             await interaction.response.defer()
 
-            #Generate the question/answer
+            # Check and adjust the temperature value if necessary
+            if temp <= 0 or temp > 0.9:
+                temp = 0.5
+            else:
+                pass
+
+            # Generate the answer using GPT
             answer = ask_gpt(question, temp)
+
+            # Wait for a specific duration (if necessary)
+            await asyncio.sleep(3)
 
             user = interaction.user
             dm_channel = await user.create_dm()
             await dm_channel.send(content=f"Question: {question}\n\n Answer: {answer}")
         else:
+            # Send an error message for not being logged in
             await interaction.response.send_message(f"Please login first", ephemeral=True)
-    
+
+
 
 #Setup
 async def setup(bot):

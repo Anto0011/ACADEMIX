@@ -1,25 +1,33 @@
 import pathlib
-import os
 import logging
+import os
 from logging.config import dictConfig
 from dotenv import load_dotenv
 import discord
 
+#Load variables from .env file
 load_dotenv()
 
+#Load the keys from .env file
 DISCORD_API_KEY = str(os.getenv("DISCORD_API_KEY"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-GUILDS_ID = discord.Object(id=int(os.getenv("GUILD")))#type: ignore
+GUILDS_ID = discord.Object(id= int(os.getenv("GUILD")))#type: ignore
 
+#Load database credentials
+ht = str(os.getenv("ht"))
+user = str(os.getenv("user"))
+pwd = str(os.getenv("pwd"))
+db = str(os.getenv("db"))
 
+#Create the base directory
 BASE_DIR = pathlib.Path(__file__).parent
 
+#Import path of discord commands
 CMDS_DIR = BASE_DIR / "cmds"
 COGS_DIR = BASE_DIR / "cogs"
-
-#Import slash commands path
 SLASHCMDS_DIR = BASE_DIR / "slashcmds"
 
+#Logging settings
 LOGGING_CONFIG = {
     "version": 1,
     "disabled_existing_loggers": False,
@@ -64,4 +72,5 @@ LOGGING_CONFIG = {
     }
 }
 
+#Initialize logging
 dictConfig(LOGGING_CONFIG)

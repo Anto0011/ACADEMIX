@@ -1,18 +1,15 @@
 import mysql.connector
 import login_register
 from login_register import login_manager
-
+import settings
 
 #Establish connection with database
 mydb = mysql.connector.connect(
-    host = "193.204.40.146",
-    user = "gr1",
-    password = "group1#23",
-    database = "group1"
+    host = settings.ht,
+    user = settings.user,
+    password = settings.pwd,
+    database = settings.db
 )
-
-#Create a cursor
-mycursor = mydb.cursor()
 
 # Get the primary key of the course
 def guide_key(course_name):
@@ -20,6 +17,7 @@ def guide_key(course_name):
     mycursor = mydb.cursor()
 
     try:
+        # SQL query to select guide_id based on course_name
         sql = "SELECT guide_id FROM Study_guide WHERE course_name = (%s)"
         mycursor.execute(sql, (course_name,))
         result = mycursor.fetchall()
@@ -55,8 +53,6 @@ def get_student_id(name):
         # Close the cursor
         mycursor.close()
 
-
-
 # Add a new course
 def add_course(course_name, student_name):
     # Create a cursor object
@@ -76,15 +72,15 @@ def add_course(course_name, student_name):
         sql = "INSERT INTO group1.Study_guide (course_name, student_id) VALUES (%s, %s)"
         mycursor.execute(sql, (course_name, student_id))
         mydb.commit()
+        mycursor.close()  # Close the cursor
         return f"{course_name} added to the study guide successfully"
-
-
 
 # Add a new topic under a course
 def add_topic(course_name, topic_name):
     # Get the primary key of the course
     guide_id = guide_key(course_name)
 
+    # Create a cursor object
     mycursor = mydb.cursor()
 
     try:
@@ -113,8 +109,6 @@ def add_topic(course_name, topic_name):
     finally:
         # Close the cursor
         mycursor.close()
-
-
 
 # Remove a course and related topics
 def remove_course(course_name, name):
@@ -148,7 +142,6 @@ def remove_course(course_name, name):
     finally:
         # Close the cursor
         mycursor.close() #type: ignore
-
 
 # Remove a topic under a course
 def remove_topic(topic_name, username):
