@@ -57,7 +57,7 @@ _env\Scripts\activate_
 _source env/bin/activate_
 
 
-4. Create a folder named _logs_ in the projects root directory
+4. Create a folder named _logs_ in the project's root directory
 
 
 
