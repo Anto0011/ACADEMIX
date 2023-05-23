@@ -93,65 +93,75 @@ pwd= <your_password>
 
 
 **Step 5: Start Academix**
+
 1.	In the terminal or command prompt, ensure that you are still in the project's root directory and the virtual environment is active.
 2.	Run the following file inside Visual Studio Code to start Academix:
 main.py
 
 
 **Usage**
+
 Academix provides a set of commands and features to help university students study more efficiently. Here's an overview of the main functionalities:
 
 **Autocompletion**
+
 When entering course or topic names, Academix provides autocompletion suggestions to help you select the correct option. The autocompletion feature will automatically suggest available course and topic names as you type.
 
 
 **Registering and Logging in**
 
 **Register**
+
 The register command allows you to register your account to the database. You can use the command as follows:
 
-•	/access register <email> <password>
+•	_/access register <email> <password>_
 	
 	
 **Login**
+	
 The login command allows you to use the functionalities of our application. You can use the command as follows:
 	
-•	/access login <email> <password>
+•	_/access login <email> <password>_
 	
 	
 **Course management**
+	
 Creating a Study Guide
 The add_course command allows you to add a course to your study guide. You can use the command as follows:
 	
-•	/study_guide add_course <course_name>
+•	_/study_guide add_course <course_name>_
 
 	
 **Adding Topics**
+	
 The add_topic command enables you to add a topic to an existing course in your study guide. Use the command as follows:
 	
-•	/study_guide add_topic <course_name> <topic_name>
+•	_/study_guide add_topic <course_name> <topic_name>_
 
 	
 **Removing Courses and Topics**
+	
 You can remove a course from your study guide using the remove_course command:
 	
-•	/study_guide remove_course <course_name>
+•	_/study_guide remove_course <course_name>_
 
 	
 To remove a topic from a course, use the remove_topic command:
 	
-•	/study_guide remove_topic <course_name> <topic_name>
+•	_/study_guide remove_topic <course_name> <topic_name>_
 
 	
 **Generating Questions**
+	
 The generate_question command generates a question based on the specified course, topic, and difficulty level. Here's how to use the command:
 	
-•	/gpt generate_question <course_name>  <topic_name>  <difficulty_level>
+•	_/gpt generate_question <course_name>  <topic_name>  <difficulty_level>_
 
 	
 **Asking GPT**
+	
 The ask_gpt command allows you to ask a question to the GPT model. Temperature is the creativity of GPT and it takes a value between 0 and 1(default=0.5). Here's an example of how to use it:
 	
-•	/gpt ask_gpt <your_question> <temperature>
+•	_/gpt ask_gpt <your_question> <temperature>_
 	
 	
