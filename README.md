@@ -46,7 +46,7 @@ _Python3 -m venv env_
 _venv env_
 
 
-**3.	Activate the virtual environment:**
+3.	Activate the virtual environment:
 
 **•	Windows:**
 
@@ -55,6 +55,9 @@ _env\Scripts\activate_
 **• macOS/Linux:**
 
 _source env/bin/activate_
+
+
+4. Create a logs folder in the projects root directory
 
 
 
