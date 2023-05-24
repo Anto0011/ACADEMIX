@@ -23,8 +23,6 @@ db = str(os.getenv("db"))
 BASE_DIR = pathlib.Path(__file__).parent
 
 #Import path of discord commands
-CMDS_DIR = BASE_DIR / "cmds"
-COGS_DIR = BASE_DIR / "cogs"
 SLASHCMDS_DIR = BASE_DIR / "slashcmds"
 
 #Logging settings
