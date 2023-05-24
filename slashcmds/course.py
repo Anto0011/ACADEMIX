@@ -42,6 +42,7 @@ class courses(app_commands.Group):
         else:
             return data
     
+    # Add course command
     @app_commands.command()
     async def add_course(self, interaction: discord.Interaction, coursename: str):
         # Check if the user is logged in

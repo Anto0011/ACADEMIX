@@ -22,7 +22,7 @@ def run():
     @bot.event
     async def on_ready():
         logger.info(f"User: {bot.user} (ID: {bot.user.id})")#type: ignore
-        
+
         #Load the required discord commands
         await bot.load_extension("slashcmds.course")
         await bot.load_extension("slashcmds.LogReg")

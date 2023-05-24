@@ -25,7 +25,8 @@ def ask_gpt(msg, temp):
 #Define generate_question
 def generate_question(course_name, topic_name, difficulty_level):
     Prompt = f"""Generate a question and answer for {course_name} on {topic_name} topic for a student preparing for exam. 
-    Ensure that your question covers key concepts and information, and are accurate and factually correct. Avoid giving unfinished sentences. Change the difficulty of the question based on this difficulty level: {difficulty_level}.
+    Ensure that your question covers key concepts and information, and are accurate and factually correct. Avoid giving unfinished sentences.
+    Change the difficulty of the question based on this difficulty level: {difficulty_level}.
     Desired Format: 
     Q:
     A: """
