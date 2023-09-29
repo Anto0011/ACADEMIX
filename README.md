@@ -1,4 +1,19 @@
-# Introduction
+<h1 align="center">Academix</h1>
+
+<p align="center">
+  
+<img src="https://img.shields.io/badge/version-0.3.6%20Beta-black?color=%23630dcc">
+
+<img src="https://badges.frapsoft.com/os/v1/open-source.png?v=103" >
+
+<img src="https://img.shields.io/badge/Made%20with-Python-black?color=%23d412ac&link=www.python.org">
+
+<img src="https://img.shields.io/badge/License-MIT-brightgreen?link=https%3A%2F%2Fgithub.com%2Fberkeokur%2FDoi_finder%2Fblob%2Fmain%2FLICENSE">
+
+</p>
+
+
+# About this project
 
 Academix is a project designed to help university students study more efficiently. It offers a set of features aimed at enhancing the study experience. The main features of Academix include:
 
@@ -14,7 +29,7 @@ With the integration of the OpenAI API, Academix generates practice questions ba
 
 Academix provides functionalities for adding and removing courses from the study guide.
 
-# Installation
+# Project Setup Guide
 
 ## Prerequisites
 
